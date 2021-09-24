@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css" />
+    <title>Hello, world!</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-color">
+            <a class="navbar-brand" href="#"><a class="navbar-brand" href="#">
+                    <img src="./assets/netflix_logo.png" class="netflix-logo" /> </a></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar -->
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Tv Shows</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Movies</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Recently Added</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">My list</a>
+                    </li>
+                </ul>
+                <div class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-search"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                </div>
+                <h6 class="kids-text">KIDS</h6>
+                <div class="bell-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white" class="bi bi-bell-fill"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z" />
+                    </svg>
+                </div>
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle-new profile-button profile-button" type="button"
+                        id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="assets/kids_icon.png" id="profile-image" />
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- admin form -->
+    <div class="container d-flex justify-content-center">
+        <form onsubmit="postProduct()">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input id="name" type="text" class="form-control">
+
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input id="description" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="brand">Category</label>
+                <input id="category" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="imageUrl">Image Url</label>
+                <input id="imageUrl" type="text" class="form-control">
+            </div>
+
+
+
+            <div class="d-flex justify-content-between">
+                <div>
+                    <button type="button" class="btn btn-success" onclick="postMovie()">Post</button>
+                    <button type="button" class="btn btn-success" onclick="getMovie()">Get Movie</button>
+
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary" onclick="editMovie()">Edit</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteMovie()">Delete</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+    <script>
+        const postMovie = async (event) => {
+            /* event.preventdefault() */
+
+            try {
+                const obj = {
+                    name: document.getElementById("name").value,
+                    description: document.getElementById("description").value,
+                    category: document.getElementById("category").value,
+                    imageUrl: document.getElementById("imageUrl").value,
+
+                }
+
+
+                const response = await fetch("https://striveschool-api.herokuapp.com/api/movies", {
+                    method: 'POST',
+                    headers: {
+                        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjRlMDRiYjUzZDAwMTViMTlmMTMiLCJpYXQiOjE2MzI0NzUyNzgsImV4cCI6MTYzMzY4NDg3OH0.pns0iDvu1JNtOqHqguZjN3MILejcxarzBexFzgqB08I",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(obj)
+
+                })
+                const newMovie = await response.json()
+
+                console.log(newMovie)
+
+                if (response.ok) {
+                    window.location.assign("index.html")
+                    alert("you posted a new movie")
+                }
+            } catch (err) { console.log("there's an error: ", err) }
+        }
+
+        const getMovie = async () => {
+
+            const movieId = new URLSearchParams(location.search).get("movieId")
+
+            try {
+                const response = await fetch("https://striveschool-api.herokuapp.com/api/movies/" + movieId, {
+                    method: 'GET',
+                    headers: {
+                        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjRlMDRiYjUzZDAwMTViMTlmMTMiLCJpYXQiOjE2MzI0NzUyNzgsImV4cCI6MTYzMzY4NDg3OH0.pns0iDvu1JNtOqHqguZjN3MILejcxarzBexFzgqB08I",
+                        "Content-Type": "application/json"
+                    },
+
+                })
+                const movie = await response.json()
+                console.log(movie)
+
+
+                /* if (response.ok) {
+                    alert(`You GOT the product:${movie.name} `)
+                    document.getElementById("name").value = movie.name
+                    document.getElementById("description").value = movie.description
+                    document.getElementById("category").value = movie.category
+                    document.getElementById("imageUrl").value = movie.imageUrl
+
+                } */
+
+            } catch (e) { console.log(e) }
+        }
+
+        const deleteMovie = async () => {
+
+
+            const movieId = new URLSearchParams(location.search).get("movieId")
+
+            try {
+                const response = await fetch("https://striveschool-api.herokuapp.com/api/movies/" + movieId, {
+                    method: 'DELETE',
+                    headers: {
+                        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjRlMDRiYjUzZDAwMTViMTlmMTMiLCJpYXQiOjE2MzI0NzUyNzgsImV4cCI6MTYzMzY4NDg3OH0.pns0iDvu1JNtOqHqguZjN3MILejcxarzBexFzgqB08I",
+                        "Content-Type": "application/json"
+                    },
+
+                })
+                const movie = await response.json()
+                console.log(movie)
+            } catch (e) { console.log(e) }
+        }
+        const deleteMovie = async () => {
+
+
+            const movieId = new URLSearchParams(location.search).get("movieId")
+
+            let obj = {
+                    name: document.getElementById("name").value,
+                    description: document.getElementById("description").value,
+                    category: document.getElementById("category").value,
+                    imageUrl: document.getElementById("imageUrl").value,
+
+                }
+
+            try {
+                const response = await fetch("https://striveschool-api.herokuapp.com/api/movies/" + movieId, {
+                    method: 'PUT',
+                    headers: {
+                        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTRiMjRlMDRiYjUzZDAwMTViMTlmMTMiLCJpYXQiOjE2MzI0NzUyNzgsImV4cCI6MTYzMzY4NDg3OH0.pns0iDvu1JNtOqHqguZjN3MILejcxarzBexFzgqB08I",
+                        "Content-Type": "application/json"
+                    },
+
+                })
+                const movie = await response.json()
+                console.log(movie)
+            } catch (e) { console.log(e) }
+        }
+
+    </script>
+
+</body>
+
+</html>
